@@ -1,4 +1,21 @@
-var myApp = angular.module("myApp",[])
+var myApp = angular.module("myApp",["ngRoute"])
+
+myApp.config(function($routeProvider){
+
+	$routeProvider
+		.when("/books",{
+			templateUrl:"partials/book-list.html",
+			controller: "BookListCtrl"
+		})
+		.when("/kart",{
+			templateUrl:"partials/kart-list.html",
+			controller:"KartListCtrl"
+		})
+		.otherwise({
+			redirectTo: "/books"
+		})
+
+})
 
 myApp.controller("HeaderCtrl", function($scope){
 
@@ -6,8 +23,16 @@ myApp.controller("HeaderCtrl", function($scope){
 		title: "BookKart",
 		tagline:"lots of books ...."
 	};
-
 })
+
+myApp.controller("KartListCtrl",function($scope){
+	$scope.kart = [];
+
+	$scop.buy = function(){
+		console.log("buy");
+	}
+})
+
 
 myApp.controller("BookListCtrl",function($scope){
 
