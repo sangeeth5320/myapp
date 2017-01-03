@@ -1,42 +1,38 @@
-var myApp = angular.module("myApp",["ngRoute"])
+var myApp = angular.module("myApp", ["ngRoute", "ngAnimate"]);
 
-myApp.config(function($routeProvider){
-
+myApp.config(function($routeProvider) {
 	$routeProvider
-		.when("/books",{
-			templateUrl:"partials/book-list.html",
+		.when("/books", {
+			templateUrl: "partials/book-list.html",
 			controller: "BookListCtrl"
 		})
-		.when("/kart",{
-			templateUrl:"partials/kart-list.html",
-			controller:"KartListCtrl"
+		.when("/kart", {
+			templateUrl: "partials/kart-list.html",
+			controller: "KartListCtrl"
 		})
-		.otherwise({
-			redirectTo: "/books"
-		})
+	.otherwise({
+		redirectTo: "/books"
+	});
+});
 
-})
-
-myApp.controller("HeaderCtrl", function($scope){
-
-	$scope.appDetails = {
-		title: "BookKart",
-		tagline:"lots of books ...."
-	};
-})
-
-myApp.controller("KartListCtrl",function($scope){
-	$scope.kart = [];
-
-	$scop.buy = function(){
-		console.log("buy");
+myApp.factory("kartService", function() {
+	var kart = [];
+	
+	return {
+		getKart: function() {
+			return kart;
+		},
+		addToKart: function(book) {
+			kart.push(book);
+		},
+		buy: function(book) {
+			alert("Thanks for buying: ", book.name);
+		}
 	}
-})
+});
 
-
-myApp.controller("BookListCtrl",function($scope){
-
-	$scope.books = [
+myApp.factory("bookService", function() {
+	var books = [
 		{
 			imgUrl: "adultery.jpeg",
 			name: "Adultery",
@@ -98,10 +94,35 @@ myApp.controller("BookListCtrl",function($scope){
 			details: "Wings of Fire traces the life and times of India's former president A.P.J. Abdul Kalam. It gives a glimpse of his childhood as well as his growth as India's Missile Man. Summary of the Book Wings... View More"
 		}
 	];
-
-	$scope.addToKart = function(book) {
-		console.log("add to kart: ", book);
+	
+	return {
+		getBooks: function() {
+			return books;
+		},
+		addToKart: function(book) {
+			
+		}
 	}
+});
 
+myApp.controller("KartListCtrl", function($scope, kartService) {
+	$scope.kart = kartService.getKart();
+	
+	$scope.buy = function(book) {
+		kartService.buy(book);
+	}
+});
 
-})
+myApp.controller("HeaderCtrl", function($scope) {
+	$scope.appDetails = {};
+	$scope.appDetails.title = "BooKart";
+	$scope.appDetails.tagline = "We have collection of 1 Million books";
+});
+
+myApp.controller("BookListCtrl", function($scope, bookService, kartService) {
+	$scope.books = bookService.getBooks();
+	
+	$scope.addToKart = function(book) {
+		kartService.addToKart(book);
+	}
+});
