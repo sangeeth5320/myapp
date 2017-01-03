@@ -1,15 +1,15 @@
-var HeaderCtrl = function($scope){
+var myApp = angular.module("myApp",[])
+
+myApp.controller("HeaderCtrl", function($scope){
 
 	$scope.appDetails = {
 		title: "BookKart",
 		tagline:"lots of books ...."
 	};
 
-}
+})
 
-
-
-var BookListCtrl = function($scope){
+myApp.controller("BookListCtrl",function($scope){
 
 	$scope.books = [
 		{
@@ -79,4 +79,4 @@ var BookListCtrl = function($scope){
 	}
 
 
-}
+})
